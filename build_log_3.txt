@@ -1,0 +1,38 @@
+Found multiple config files with supported names: docker-compose.yml, compose.yaml
+Using docker-compose.yml
+
+Found multiple config files with supported names: docker-compose.yml, compose.yaml
+Using docker-compose.yml
+
+
+> build
+> vite build
+
+[36mvite v8.0.12 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming (17) [2mnode_modules/@inertiajs/react/dist/index.js[0m[2Ktransforming (29) [2mnode_modules/react/cjs/react.production.js[0m[2Ktransforming (118) [2mnode_modules/lucide-react/dist/esm/icons/battery-plus.mjs[0m[2Ktransforming (272) [2mnode_modules/recharts/es6/util/getRelativeCoordinate.js[0m[2Ktransforming (273) [2mnode_modules/lucide-react/dist/esm/icons/bookmark.mjs[0m[2Ktransforming (274) [2mnode_modules/lucide-react/dist/esm/icons/arrow-right-from-line.mjs[0m[2Ktransforming (866) [2mnode_modules/lucide-react/dist/esm/icons/drum.mjs[0m[2Ktransforming (1660) [2mnode_modules/lucide-react/dist/esm/icons/monitor-x.mjs[0m[2Ktransforming (1661) [2mnode_modules/lucide-react/dist/esm/icons/superscript.mjs[0m[2Ktransforming (1662) [2mnode_modules/lucide-react/dist/esm/icons/plus.mjs[0m[2Ktransforming (2260) [2mnode_modules/es-toolkit/dist/predicate/isWeakSet.mjs[0m[2Ktransforming (2545) [2mnode_modules/recharts/es6/animation/easing.js[0m[2Ktransforming (2546) [2mnode_modules/axios/lib/helpers/speedometer.js[0m[2Ktransforming (2547) [2mnode_modules/axios/lib/helpers/cookies.js[0m[2K[32m✓[39m 2861 modules transformed.
+[2K[1G[31m✗[39m Build failed in 2.43s
+[31merror during build:
+[31mBuild failed with 1 error:
+
+[plugin vite:css] /var/www/html/resources/css/app.css:10:4
+CssSyntaxError: [postcss] /var/www/html/resources/css/app.css:10:5: You cannot `@apply` the `font-outfit` utility here because it creates a circular dependency.
+    at Input.error (/var/www/html/node_modules/vite/node_modules/postcss/lib/input.js:135:16)
+    at Rule.error (/var/www/html/node_modules/vite/node_modules/postcss/lib/node.js:146:32)
+    at processApply (/var/www/html/node_modules/tailwindcss/lib/lib/expandApplyAtRules.js:443:32)
+    at /var/www/html/node_modules/tailwindcss/lib/lib/expandApplyAtRules.js:551:9
+    at /var/www/html/node_modules/tailwindcss/lib/processTailwindFeatures.js:55:50
+    at async plugins (/var/www/html/node_modules/tailwindcss/lib/plugin.js:38:17)
+    at async LazyResult.runAsync (/var/www/html/node_modules/vite/node_modules/postcss/lib/lazy-result.js:293:11)
+    at async runPostCSS (file:///var/www/html/node_modules/vite/dist/node/chunks/node.js:21045:19)
+    at async compilePostCSS (file:///var/www/html/node_modules/vite/dist/node/chunks/node.js:21029:6)
+    at async compileCSS (file:///var/www/html/node_modules/vite/dist/node/chunks/node.js:20959:26)[31m
+    at aggregateBindingErrorsIntoJsError (file:///var/www/html/node_modules/rolldown/dist/shared/error-BrnLyQ-g.mjs:48:18)
+    at unwrapBindingResult (file:///var/www/html/node_modules/rolldown/dist/shared/error-BrnLyQ-g.mjs:18:128)
+    at #build (file:///var/www/html/node_modules/rolldown/dist/shared/rolldown-build-D_ShytiL.mjs:3257:34)
+    at async buildEnvironment (file:///var/www/html/node_modules/vite/dist/node/chunks/node.js:33052:64)
+    at async Object.build (file:///var/www/html/node_modules/vite/dist/node/chunks/node.js:33474:19)
+    at async Object.buildApp (file:///var/www/html/node_modules/vite/dist/node/chunks/node.js:33471:153)
+    at async CAC.<anonymous> (file:///var/www/html/node_modules/vite/dist/node/cli.js:778:3) {
+  errors: [Getter/Setter]
+}[39m
+⠙[1G[0K
