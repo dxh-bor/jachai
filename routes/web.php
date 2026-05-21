@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\FraudCheckController;
 use App\Http\Controllers\User\UserPlanController;
+use App\Http\Controllers\User\UserPaymentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminPlanController;
@@ -38,6 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::get('checker', [FraudCheckController::class, 'index'])->name('checker');
     Route::post('checker/check', [FraudCheckController::class, 'check'])->name('checker.check');
     Route::get('plans', [UserPlanController::class, 'index'])->name('plans');
+    Route::get('payment', [UserPaymentController::class, 'index'])->name('payment');
+    Route::post('payment', [UserPaymentController::class, 'store'])->name('payment.store');
+
+    // Add report fraud routes here
     
     // Add report fraud routes here
     Route::get('report-fraud', [\App\Http\Controllers\User\ReportFraudController::class, 'index'])->name('report.fraud');
@@ -51,10 +56,13 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('users', [AdminUserController::class, 'index'])->name('users');
+        Route::patch('users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
         Route::patch('users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
         Route::get('plans', [AdminPlanController::class, 'index'])->name('plans');
         Route::patch('plans/{plan}', [AdminPlanController::class, 'update'])->name('plans.update');
         Route::get('payments', [AdminPaymentController::class, 'index'])->name('payments');
+        Route::patch('payments/{payment}', [AdminPaymentController::class, 'update'])->name('payments.update');
     });
 });
 

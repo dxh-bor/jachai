@@ -80,8 +80,8 @@ export default function Plans({ plans, activePlanId }) {
                                     <Check size={18} strokeWidth={3} /> Current Plan
                                 </button>
                             ) : (
-                                <Link 
-                                    href="#"
+                                <Link
+                                    href={route('payment', { plan_id: plan.id })}
                                     className={cn(
                                         "w-full py-4 rounded-2xl font-black text-sm uppercase tracking-widest text-center transition-all",
                                         plan.name === 'Pro' ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100 hover:bg-indigo-700" : "bg-slate-900 text-white hover:bg-slate-800"

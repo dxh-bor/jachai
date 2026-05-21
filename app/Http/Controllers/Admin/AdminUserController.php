@@ -29,10 +29,34 @@ class AdminUserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'is_active' => 'required|boolean',
+        ]);
+
+        $user->update($validated);
+
+        return back()->with('success', 'User updated successfully.');
+    }
+
+    public function toggleStatus(User $user)
+    {
         $user->update([
             'is_active' => !$user->is_active
         ]);
 
         return back()->with('success', 'User status updated successfully.');
+    }
+
+    public function destroy(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'You cannot delete your own account.');
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'User deleted successfully.');
     }
 }
