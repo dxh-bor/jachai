@@ -28,7 +28,7 @@ class AdminDashboardController extends Controller
         )
         ->where('status', 'completed')
         ->groupBy('month')
-        ->orderBy('created_at', 'desc')
+        ->orderBy(DB::raw('MAX(created_at)'), 'desc')
         ->limit(6)
         ->get()
         ->reverse()

@@ -87,6 +87,7 @@ export default function Payments({ payments, filters }) {
                                 <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest text-center">Method</th>
                                 <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest text-center">Status</th>
                                 <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest text-right">Date</th>
+                                <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
@@ -135,6 +136,39 @@ export default function Payments({ payments, filters }) {
                                             <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{new Date(payment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                         </div>
                                     </td>
+                                    <td className="px-8 py-5 text-center">
+                                        <div className="flex justify-center gap-2">
+                                            {payment.status === 'pending' && (
+                                                <>
+                                                    <button
+                                                        onClick={() => {
+                                                            if (confirm('Verify this payment and upgrade user plan?')) {
+                                                                router.patch(route('admin.payments.update', payment.id), { status: 'completed' });
+                                                            }
+                                                        }}
+                                                        className="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 transition-all"
+                                                        title="Verify Payment"
+                                                    >
+                                                        <CheckCircle2 size={18} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            if (confirm('Mark this payment as failed?')) {
+                                                                router.patch(route('admin.payments.update', payment.id), { status: 'failed' });
+                                                            }
+                                                        }}
+                                                        className="p-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all"
+                                                        title="Mark Failed"
+                                                    >
+                                                        <XCircle size={18} />
+                                                    </button>
+                                                </>
+                                            )}
+                                            {payment.status !== 'pending' && (
+                                                <span className="text-xs font-bold text-slate-400 italic">Verified</span>
+                                            )}
+                                        </div>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -150,7 +184,7 @@ export default function Payments({ payments, filters }) {
                         {payments.links.map((link, i) => (
                             <Link
                                 key={i}
-                                href={link.url}
+                                href={link.url || '#'}
                                 className={cn(
                                     "px-4 py-2 rounded-xl text-sm font-bold transition-all",
                                     link.active ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50",

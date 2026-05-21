@@ -24,4 +24,35 @@ class AdminPaymentController extends Controller
             'filters' => $request->only(['date_from', 'date_to', 'status']),
         ]);
     }
+
+    public function update(Request $request, Payment $payment)
+    {
+        $validated = $request->validate([
+            'status' => 'required|string|in:completed,failed',
+        ]);
+
+        \DB::transaction(function () use ($payment, $validated) {
+            $payment->update([
+                'status' => $validated['status'],
+                'paid_at' => $validated['status'] === 'completed' ? now() : null,
+            ]);
+
+            if ($validated['status'] === 'completed') {
+                $userPlan = \App\Models\UserPlan::firstOrCreate(
+                    ['user_id' => $payment->user_id],
+                    ['plan_id' => $payment->plan_id, 'is_active' => true]
+                );
+
+                $userPlan->update([
+                    'plan_id' => $payment->plan_id,
+                    'started_at' => now(),
+                    'expires_at' => now()->addMonths(1),
+                    'checks_used' => 0,
+                    'is_active' => true,
+                ]);
+            }
+        });
+
+        return back()->with('success', 'Payment status updated and plan activated.');
+    }
 }

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { 
-    Search, 
-    MoreVertical, 
-    User as UserIcon, 
-    Shield, 
+import {
+    Search,
+    MoreVertical,
+    User as UserIcon,
+    Shield,
     Calendar,
     Power,
     CheckCircle2,
-    XCircle
+    XCircle,
+    Trash2
 } from 'lucide-react';
 import { debounce } from 'lodash';
 
@@ -21,7 +22,7 @@ export default function Users({ users, filters }) {
     }, 500);
 
     const toggleStatus = (id) => {
-        router.patch(route('admin.users.update', id));
+        router.patch(route('admin.users.toggle-status', id));
     };
 
     return (
@@ -112,16 +113,29 @@ export default function Users({ users, filters }) {
                                         )}
                                     </td>
                                     <td className="px-8 py-5 text-right">
-                                        <button 
-                                            onClick={() => toggleStatus(user.id)}
-                                            className={cn(
-                                                "p-2 rounded-xl transition-all",
-                                                user.is_active ? "text-slate-400 hover:text-red-600 hover:bg-red-50" : "text-emerald-400 hover:text-emerald-600 hover:bg-emerald-50"
-                                            )}
-                                            title={user.is_active ? 'Deactivate User' : 'Activate User'}
-                                        >
-                                            <Power size={20} />
-                                        </button>
+                                        <div className="flex justify-end gap-2">
+                                            <button
+                                                onClick={() => toggleStatus(user.id)}
+                                                className={cn(
+                                                    "p-2 rounded-xl transition-all",
+                                                    user.is_active ? "text-slate-400 hover:text-red-600 hover:bg-red-50" : "text-emerald-400 hover:text-emerald-600 hover:bg-emerald-50"
+                                                )}
+                                                title={user.is_active ? 'Deactivate User' : 'Activate User'}
+                                            >
+                                                <Power size={20} />
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    if (confirm('Are you sure you want to delete this user?')) {
+                                                        router.delete(route('admin.users.destroy', user.id));
+                                                    }
+                                                }}
+                                                className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all"
+                                                title="Delete User"
+                                            >
+                                                <Trash2 size={20} />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -138,7 +152,7 @@ export default function Users({ users, filters }) {
                         {users.links.map((link, i) => (
                             <Link
                                 key={i}
-                                href={link.url}
+                                href={link.url || '#'}
                                 className={cn(
                                     "px-4 py-2 rounded-xl text-sm font-bold transition-all",
                                     link.active ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50",

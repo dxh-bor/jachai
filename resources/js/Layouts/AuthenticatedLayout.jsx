@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu as HeadlessMenu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import toast, { Toaster } from 'react-hot-toast';
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -44,9 +45,21 @@ const NavLink = ({ href, active, children, icon: Icon }) => (
 );
 
 export default function AuthenticatedLayout({ children }) {
-    const { auth } = usePage().props;
+    const { auth, flash } = usePage().props;
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const isAdmin = auth.user.role === 'admin';
+
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success);
+        }
+        if (flash?.error) {
+            toast.error(flash.error);
+        }
+        if (flash?.result) {
+            toast(flash.result);
+        }
+    }, [flash]);
 
     const userNavigation = [
         { name: 'Dashboard', href: route('dashboard'), icon: LayoutDashboard, active: route().current('dashboard') },
@@ -230,6 +243,7 @@ export default function AuthenticatedLayout({ children }) {
                         {children}
                     </div>
                 </main>
+                <Toaster position="top-right" reverseOrder={false} />
             </div>
         </div>
     );
